@@ -1,6 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+        .button {
+            background-color: green;
+            border: none;
+            color: white;
+            padding: 30 px;
+            border-radius: 50%;
+            text-align:initial;
+            overflow:hidden;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 4px;
+            cursor: pointer;
+            box-shadow: 0 0 3px gray;
+        }
+        .button2 {
+            background-color: red;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            padding: 30 px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 4px;
+            cursor: pointer;
+        }
+        .button3 {
+            background-color:lightcoral;
+            border: none;
+            color: white;
+            padding: 30 px;
+            border-radius: 50%;
+            text-align:initial;
+            overflow:hidden;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 4px;
+            cursor: pointer;
+            box-shadow: 0 0 3px gray;
+        }
+        .navbar {
+            background-position-x: 15px;
+            text-align: left;
+            color:steelblue;
+            font-size: 20px;
+        }
+        h1{
+            text-align: center;
+            text-decoration: lightslategray;
+            color: white;
+            background-color: lightskyblue;
+        }
+    </style>
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="plotly.min.js"></script>
     <title>Dash board</title>
@@ -11,34 +69,59 @@
     <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer src="/__/firebase/init.js"></script>
-
+    
   </head>
+
   <body>
-    <h1 id = "bigOne"></h1>
+    <h1 id = "bigOne">Real Time Graph</h1>
 
     <div class="navbar"><span>Speed</span></div>
     
     <div class="wrapper">
         <div id="chart"></div>
         <script>
-            document.addEventListener("DOMContentLoaded", event => {
+            document.addEventListener("DOMContentLoaded", event => 
+            {
             Plotly.newPlot('chart',[{y:[0] , x:[0],type:'line'}]);
             //Plotly.relayout('chart',{xaxis: {range: [0, 30]}});
-            
-            let time = 0;
-
-            setInterval(function(){
-                console.log(Speed);
-                Plotly.extendTraces('chart',{y:[[Speed]], x:[[performance.now()/1000]]}, [0]);
-                time += .5;
-            },1);
-          }
+            }
         );
         </script>
     </div>
 
     <script src = "app.js">
     </script>
+<center>
+<input id = "Button" class = "button" type = "button" value = "Start" onclick= "ButtonClicked()" ></input>
+<input id=  "Save"  class = "button3" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
+</center>
+
+<script>
+    var interval;
+    function ButtonClicked()
+    {         
+         if(document.getElementById("Button").value == "Stop") 
+        {
+            document.getElementById("Button").value= "Start";
+            document.getElementById("Button").className = "button";
+             clearInterval(interval);
+        }  
+        else if(document.getElementById("Button").value= "Start") 
+        {
+            document.getElementById("Button").value= "Stop";
+            document.getElementById("Button").className = "button2";
+            interval = setInterval(function(){console.log(Speed);
+                Plotly.extendTraces('chart',{y:[[Speed]], x:[[performance.now()/1000]]}, [0]);}
+                ,1);
+        }    
+        
+    }
+    function SaveButtonClicked()
+    {
+        Plotly.downloadImage('chart', {format: 'png', width: 800, height: 600, filename: 'Speed_graph'});
+    }
+
+</script>
 
   </body>
 </html>
