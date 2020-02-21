@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src = "app.js"></script>
+    <script src="plotly.min.js"></script>
+        <!-- update the version number as needed -->
+        <script defer src="/__/firebase/7.2.3/firebase-app.js"></script>
+        <!-- include only the Firebase features as you need -->
+        <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
+        <!-- initialize the SDK after all desired features are loaded -->
+        <script defer src="/__/firebase/init.js"></script>
+    <title>Dash board</title>
     <style>
+        body
+        {
+        background-image: url(a.png);
+        }
+
         .button {
+          position: fixed;
             background-color: green;
             border: none;
             color: white;
+            border-style: outset;
             padding: 30 px;
             border-radius: 50%;
             text-align:initial;
@@ -16,12 +33,15 @@
             margin: 4px 4px;
             cursor: pointer;
             box-shadow: 0 0 3px gray;
+            bottom: 20px;
         }
         .button2 {
-            background-color: red;
+          position: fixed;
+            background-color: rgb(185, 26, 26);
             border: none;
             border-radius: 50%;
             color: white;
+            border-style: outset;
             padding: 30 px;
             text-align: center;
             text-decoration: none;
@@ -29,10 +49,13 @@
             font-size: 14px;
             margin: 4px 4px;
             cursor: pointer;
+            bottom: 20px;
         }
         .button3 {
-            background-color:lightcoral;
+          position: fixed;
+            background-color:rgb(182, 153, 25);
             border: none;
+            border-style: outset;
             color: white;
             padding: 30 px;
             border-radius: 50%;
@@ -44,12 +67,21 @@
             margin: 4px 4px;
             cursor: pointer;
             box-shadow: 0 0 3px gray;
+            bottom: 20px;
+            right: 250px;
+        }
+        .wrapper{
+            position: relative;
+            z-index : 0;
         }
         .navbar {
-            background-position-x: 15px;
+            position: absolute;
+            top: 120px;
+            left: 20px;
             text-align: left;
             color:steelblue;
             font-size: 20px;
+            z-index: 1;
         }
         h1{
             text-align: center;
@@ -58,67 +90,58 @@
             background-color: lightskyblue;
         }
     </style>
-
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script src="plotly.min.js"></script>
-    <title>Dash board</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.2.3/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-    
   </head>
 
   <body>
-    <h1 id = "bigOne">Real Time Graph</h1>
+   
 
+    <h1 id = "bigOne">Real Time Graph</h1>
     <div class="navbar"><span>Speed</span></div>
-    
     <div class="wrapper">
         <div id="chart"></div>
         <script>
-            document.addEventListener("DOMContentLoaded", event => 
-            {
-            Plotly.newPlot('chart',[{y:[0] , x:[0],type:'line'}]);
-            //Plotly.relayout('chart',{xaxis: {range: [0, 30]}});
-            }
-        );
+          window.addEventListener("load", event => 
+          {
+           var trace1 = {y:[Speed] , x:[0],type:'chart'};
+           console.log(Speed);
+          
+          }
+          );
         </script>
     </div>
 
-    <script src = "app.js">
-    </script>
+    
 <center>
 <input id = "Button" class = "button" type = "button" value = "Start" onclick= "ButtonClicked()" ></input>
 <input id=  "Save"  class = "button3" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
 </center>
 
 <script>
-    var interval;
+   var interval;
     function ButtonClicked()
     {         
          if(document.getElementById("Button").value == "Stop") 
         {
             document.getElementById("Button").value= "Start";
             document.getElementById("Button").className = "button";
-             clearInterval(interval);
+             clearInterval(interval); 
         }  
         else if(document.getElementById("Button").value= "Start") 
         {
             document.getElementById("Button").value= "Stop";
             document.getElementById("Button").className = "button2";
-            interval = setInterval(function(){console.log(Speed);
-                Plotly.extendTraces('chart',{y:[[Speed]], x:[[performance.now()/1000]]}, [0]);}
-                ,1);
+            Plotly.newPlot('chart',[{y:[Speed] , x:[0],type:'chart'}]);
+            Plotly.relayout('chart',{xaxis: {range: [0, 30]}});
+            interval = setInterval(function(){console.log(Speed); 
+            Plotly.extendTraces('chart',{y:[[Speed]], x:[[performance.now()/1000]]}, [0]);} ,1);
+          }
+            
         }    
         
-    }
+    
     function SaveButtonClicked()
     {
-        Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'Speed_graph'});
+        Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'Speed_graph'}); 
     }
 
 </script>
