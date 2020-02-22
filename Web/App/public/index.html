@@ -95,27 +95,34 @@
   </head>
 
   <body>
-   
+    
     <h1 id = "bigOne">Real Time Graph</h1>
-    <div class="navbar"><span>Speed</span></div>
+    <div class="navbar"><span></span></div>
     <div class="wrapper">
         <div id="chart"></div>
         <script>
+        var starting = 1;
+        var Speed  =0;
+        var Current=0;
+        var layout = 
+        {
+          grid: {rows: 1, columns: 2, pattern: 'independent'},
+        };
           document.addEventListener("DOMContentLoaded", event => 
           {
-          var dbRef = firebase.database().ref().child('Measure/Speed');
-          dbRef.on('value', snap => Speed = snap.val());
-          var dbRef2 = firebase.database().ref().child('Measure2/Current');
-          dbRef2.on('value', snap => Current = snap.val());
-           console.log(Speed);
           
+          var dbRef = firebase.database().ref().child('Measure/Speed');
+          dbRef.on('value', snap =>  {Speed = snap.val()});  
+          var dbRef2 = firebase.database().ref().child('Measure2/Current');
+          dbRef2.on('value', snap => {Current = snap.val()});
           }
           );
-          window.addEventListener("load", event =>
-          {
-            Plotly.newPlot('chart',[{y:[Speed] , x:[0],type:'line'}, {y:[Current] , x:[0],type:'line'}]);
-          }
-          )
+          document.addEventListener("DOMContentLoaded", event =>
+          { 
+            Plotly.newPlot('chart',[{y:[Speed] , x:[0],name: 'Speed',type:'line'}, 
+            {y:[Current] , x:[0],xaxis: 'x2',yaxis: 'y2', name: 'Current',type:'line'}], layout);
+          });
+
         </script>
     </div>
 
@@ -129,31 +136,33 @@
    var interval;
     function ButtonClicked()
     {         
-         if(document.getElementById("Button").value == "Stop") 
+      if(document.getElementById("Button").value == "Stop") 
         {
-            document.getElementById("Button").value= "Start";
-            document.getElementById("Button").className = "button";
-             clearInterval(interval); 
+          document.getElementById("Button").value= "Start";
+          document.getElementById("Button").className = "button";
+          clearInterval(interval); 
         }  
-        else if(document.getElementById("Button").value= "Start") 
+      else if(document.getElementById("Button").value= "Start") 
         {
-         // var Current = 0;
-            document.getElementById("Button").value= "Stop";
-            document.getElementById("Button").className = "button2";
-            Plotly.relayout('chart',{xaxis: {range: [0, 30]}}); 
-            interval = setInterval(function(){console.log(Speed); 
-            Plotly.extendTraces('chart',{y:[[Speed],[Current]], x:[[performance.now()/1000],[performance.now()/1000]]}, [0,1]);} ,1);
-          }
-            
+          document.getElementById("Button").value= "Stop";
+          document.getElementById("Button").className = "button2";
+          if(starting == 1)
+          {
+            while(!Speed && !Current);
+            Plotly.newPlot('chart',[{y:[Speed] , x:[0],name: 'Speed',type:'line'}, 
+            {y:[Current] , x:[0],xaxis: 'x2',yaxis: 'y2', name: 'Current',type:'line'}], layout);
+            starting = 0;
+          } 
+          interval = setInterval(function()
+          {
+            Plotly.extendTraces('chart',{y:[[Speed],[Current]], x:[[performance.now()/1000],[performance.now()/1000]]}, [0,1])} ,1);
         }    
-        
-    
+    }    
     function SaveButtonClicked()
     {
-        Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'Speed_graph'}); 
+      Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'ٍSpeed&Current_graph'}); 
     }
 
 </script>
-
   </body>
 </html>

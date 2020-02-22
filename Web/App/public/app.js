@@ -1,5 +1,3 @@
-var Speed = 0;
-var Current = 0;
 
 document.addEventListener("DOMContentLoaded", event => {
     const app = firebase.app();
@@ -10,7 +8,6 @@ document.addEventListener("DOMContentLoaded", event => {
       email: "toka.eldoghamy1@gmail.com",
       profile_picture : ""
     });
-    //var dbRef = firebase.database().ref('Data');
     
 }
 );
