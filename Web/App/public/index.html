@@ -34,6 +34,7 @@
             cursor: pointer;
             box-shadow: 0 0 3px gray;
             bottom: 20px;
+            right: 800px;
         }
         .button2 {
           position: fixed;
@@ -50,6 +51,7 @@
             margin: 4px 4px;
             cursor: pointer;
             bottom: 20px;
+            right: 800px;
         }
         .button3 {
           position: fixed;
@@ -68,7 +70,7 @@
             cursor: pointer;
             box-shadow: 0 0 3px gray;
             bottom: 20px;
-            right: 250px;
+            right: 650px;
         }
         .wrapper{
             position: relative;
@@ -94,19 +96,26 @@
 
   <body>
    
-
     <h1 id = "bigOne">Real Time Graph</h1>
     <div class="navbar"><span>Speed</span></div>
     <div class="wrapper">
         <div id="chart"></div>
         <script>
-          window.addEventListener("load", event => 
+          document.addEventListener("DOMContentLoaded", event => 
           {
-           var trace1 = {y:[Speed] , x:[0],type:'chart'};
+          var dbRef = firebase.database().ref().child('Measure/Speed');
+          dbRef.on('value', snap => Speed = snap.val());
+          var dbRef2 = firebase.database().ref().child('Measure2/Current');
+          dbRef2.on('value', snap => Current = snap.val());
            console.log(Speed);
           
           }
           );
+          window.addEventListener("load", event =>
+          {
+            Plotly.newPlot('chart',[{y:[Speed] , x:[0],type:'line'}, {y:[Current] , x:[0],type:'line'}]);
+          }
+          )
         </script>
     </div>
 
@@ -128,12 +137,12 @@
         }  
         else if(document.getElementById("Button").value= "Start") 
         {
+         // var Current = 0;
             document.getElementById("Button").value= "Stop";
             document.getElementById("Button").className = "button2";
-            Plotly.newPlot('chart',[{y:[Speed] , x:[0],type:'chart'}]);
-            Plotly.relayout('chart',{xaxis: {range: [0, 30]}});
+            Plotly.relayout('chart',{xaxis: {range: [0, 30]}}); 
             interval = setInterval(function(){console.log(Speed); 
-            Plotly.extendTraces('chart',{y:[[Speed]], x:[[performance.now()/1000]]}, [0]);} ,1);
+            Plotly.extendTraces('chart',{y:[[Speed],[Current]], x:[[performance.now()/1000],[performance.now()/1000]]}, [0,1]);} ,1);
           }
             
         }    
