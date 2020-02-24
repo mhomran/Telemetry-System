@@ -6,6 +6,9 @@
  */ 
 
 #include "Timer1.h"
+#include "USART.h"
+
+extern volatile uint8_t current;
 
 void 
 Timer1_Init(void)
@@ -21,17 +24,19 @@ Timer1_Init(void)
 ISR
 (TIMER1_COMPA_vect)
 {
-	//enable nested interrupts for Hall sensor
+	//enable nested interrupts for other important interrupts
 	sei();
 	
 	if (Send == 1)
 	{
-	After_Send = 1;	
 
 	//byte 0x3 means the end of the frame, so don't put it as a data and put it as a combination
-	USART_TX( ((uint8_t)(KMPH)) + 1);
+	USART_TX(((uint8_t)(KMPH)) + 1);
 	USART_TX(((uint8_t)((RPM & 0x01) ? ((RPM >> 1) + 1) : (RPM >> 1))) + 1);
 	USART_TX(((uint8_t)(RPM >> 1)) + 1);
-	USART_TX( ((uint8_t) 0x0) );
-}
+	USART_TX((uint8_t)(current) +1);
+	
+	//delimiter	
+	USART_TX(((uint8_t) 0x0));
+	}
 }

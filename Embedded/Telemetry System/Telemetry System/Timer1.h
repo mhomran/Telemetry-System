@@ -17,7 +17,6 @@ void Timer1_Init(void);
 volatile uint16_t temp;
 
 extern volatile uint8_t Send;
-extern volatile uint8_t After_Send;
 extern volatile uint32_t RPM, KMPH;
 
 #endif /* TIMER1_H_ */
