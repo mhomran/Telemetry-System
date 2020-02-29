@@ -1,0 +1,94 @@
+body
+{
+background-image: url(a.png);
+}
+
+.StartBtn {
+  position: fixed;
+    background-color: green;
+    border: none;
+    color: white;
+    border-style: outset;
+    padding: 30 px;
+    border-radius: 50%;
+    text-align:initial;
+    overflow:hidden;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 4px;
+    cursor: pointer;
+    box-shadow: 0 0 3px gray;
+    bottom: 20px;
+    right: 800px;
+}
+
+.StopBtn {
+  position: fixed;
+    background-color: rgb(185, 26, 26);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    border-style: outset;
+    padding: 30 px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 4px;
+    cursor: pointer;
+    bottom: 20px;
+    right: 800px;
+}
+
+.SaveBtn {
+  position: fixed;
+    background-color:rgb(182, 153, 25);
+    border: none;
+    border-style: outset;
+    color: white;
+    padding: 30 px;
+    border-radius: 50%;
+    text-align:initial;
+    overflow:hidden;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 4px;
+    cursor: pointer;
+    box-shadow: 0 0 3px gray;
+    bottom: 20px;
+    right: 650px;
+}
+
+.button3:active{
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.button:active{
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.button2:active{
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.wrapper{
+    position: relative;
+    z-index : 0;
+}
+.navbar {
+    position: absolute;
+    top: 120px;
+    left: 20px;
+    text-align: left;
+    color:steelblue;
+    font-size: 20px;
+    z-index: 1;
+}
+h1{
+    text-align: center;
+    text-decoration: lightslategray;
+    color: white;
+    background-color: lightskyblue;
+}

@@ -10,100 +10,8 @@
         <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
         <!-- initialize the SDK after all desired features are loaded -->
         <script defer src="/__/firebase/init.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
     <title>Dash board</title>
-    <style>
-        body
-        {
-        background-image: url(a.png);
-        }
-
-        .button {
-          position: fixed;
-            background-color: green;
-            border: none;
-            color: white;
-            border-style: outset;
-            padding: 30 px;
-            border-radius: 50%;
-            text-align:initial;
-            overflow:hidden;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 4px;
-            cursor: pointer;
-            box-shadow: 0 0 3px gray;
-            bottom: 20px;
-            right: 800px;
-        }
-        .button2 {
-          position: fixed;
-            background-color: rgb(185, 26, 26);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            border-style: outset;
-            padding: 30 px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 4px;
-            cursor: pointer;
-            bottom: 20px;
-            right: 800px;
-        }
-        .button3 {
-          position: fixed;
-            background-color:rgb(182, 153, 25);
-            border: none;
-            border-style: outset;
-            color: white;
-            padding: 30 px;
-            border-radius: 50%;
-            text-align:initial;
-            overflow:hidden;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px 4px;
-            cursor: pointer;
-            box-shadow: 0 0 3px gray;
-            bottom: 20px;
-            right: 650px;
-        }
-        .button3:active{
-          box-shadow: 0 5px #666;
-          transform: translateY(4px);
-        }
-        .button:active{
-          box-shadow: 0 5px #666;
-          transform: translateY(4px);
-        }
-        .button2:active{
-          box-shadow: 0 5px #666;
-          transform: translateY(4px);
-        }
-        .wrapper{
-            position: relative;
-            z-index : 0;
-        }
-        .navbar {
-            position: absolute;
-            top: 120px;
-            left: 20px;
-            text-align: left;
-            color:steelblue;
-            font-size: 20px;
-            z-index: 1;
-        }
-        h1{
-            text-align: center;
-            text-decoration: lightslategray;
-            color: white;
-            background-color: lightskyblue;
-        }
-    </style>
   </head>
 
   <body>
@@ -112,69 +20,14 @@
     <div class="navbar"><span></span></div>
     <div class="wrapper">
         <div id="chart"></div>
-        <script>
-        var starting = 1;
-        var Speed  =0;
-        var Current=0;
-        var layout = 
-        {
-          grid: {rows: 1, columns: 2, pattern: 'independent'},
-        };
-          document.addEventListener("DOMContentLoaded", event => 
-          {
-          
-          var dbRef = firebase.database().ref().child('Measure/Speed');
-          dbRef.on('value', snap =>  {Speed = snap.val()});  
-          var dbRef2 = firebase.database().ref().child('Measure2/Current');
-          dbRef2.on('value', snap => {Current = snap.val()});
-          }
-          );
-          document.addEventListener("DOMContentLoaded", event =>
-          { 
-            Plotly.newPlot('chart',[{y:[Speed] , x:[0],name: 'Speed',type:'line'}, 
-            {y:[Current] , x:[0],xaxis: 'x2',yaxis: 'y2', name: 'Current',type:'line'}], layout);
-          });
-
+        <script src="measure.js">
+       
         </script>
     </div>
 
     
-<center>
-<input id = "Button" class = "button" type = "button" value = "Start" onclick= "ButtonClicked()" ></input>
-<input id=  "Save"  class = "button3" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
-</center>
+<input id = "Button" class = "StartBtn" type = "button" value = "Start" onclick= "ButtonClicked()" ></input>
+<input id=  "Save"  class = "SaveBtn" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
 
-<script>
-   var interval;
-    function ButtonClicked()
-    {         
-      if(document.getElementById("Button").value == "Stop") 
-        {
-          document.getElementById("Button").value= "Start";
-          document.getElementById("Button").className = "button";
-          clearInterval(interval); 
-        }  
-      else if(document.getElementById("Button").value= "Start") 
-        {
-          document.getElementById("Button").value= "Stop";
-          document.getElementById("Button").className = "button2";
-          if(starting == 1)
-          {
-            while(!Speed && !Current);
-            Plotly.newPlot('chart',[{y:[Speed] , x:[0],name: 'Speed',type:'line'}, 
-            {y:[Current] , x:[0],xaxis: 'x2',yaxis: 'y2', name: 'Current',type:'line'}], layout);
-            starting = 0;
-          } 
-          interval = setInterval(function()
-          {
-            Plotly.extendTraces('chart',{y:[[Speed],[Current]], x:[[performance.now()/1000],[performance.now()/1000]]}, [0,1])} ,1);
-        }    
-    }    
-    function SaveButtonClicked()
-    {
-      Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'ٍSpeed&Current_graph'}); 
-    }
-
-</script>
   </body>
 </html>
