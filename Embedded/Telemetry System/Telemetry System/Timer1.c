@@ -6,9 +6,8 @@
  */ 
 
 #include "Timer1.h"
-#include "USART.h"
 
-extern volatile uint8_t current;
+
 
 void 
 Timer1_Init(void)
@@ -24,19 +23,59 @@ Timer1_Init(void)
 ISR
 (TIMER1_COMPA_vect)
 {
-	//enable nested interrupts for other important interrupts
+	//enable nested interrupts for Hall sensor
 	sei();
 	
-	if (Send == 1)
-	{
+	//if (Send == 1)
+	//{
+	//After_Send = 1;	
 
-	//byte 0x3 means the end of the frame, so don't put it as a data and put it as a combination
-	USART_TX(((uint8_t)(KMPH)) + 1);
-	USART_TX(((uint8_t)((RPM & 0x01) ? ((RPM >> 1) + 1) : (RPM >> 1))) + 1);
-	USART_TX(((uint8_t)(RPM >> 1)) + 1);
-	USART_TX((uint8_t)(current) +1);
+    //byte 0x1B means the end of the frame
+	// so don't put it as a data and put it as a combination
 	
-	//delimiter	
-	USART_TX(((uint8_t) 0x0));
-	}
+	send_RPM(RPM);        //Sending the RPM value
+	
+	send_KMPH(KMPH);      //Sending the KMPH value
+    
+    send_Current(current);//Sending the Current value 
+  
+	USART_TX(0x1B);		  //Send delimiter -> End of Package
+	//}
+}
+
+void
+send_RPM(uint32_t RPM)
+{
+	uint8_t RPMDig3 = (RPM / 100) % 10;			     //Getting Digit X3
+	
+	USART_TX(  RPM % 10 + 0x30);                     //Send X0
+	USART_TX( (RPM / 10) - RPMDig3 * 10 + 0x30);     //Send X1
+	USART_TX(  RPMDig3 + 0x30);                      //Send X2
+}
+
+void 
+send_KMPH(float KMPH)
+{
+  float KMPHDig10 = (KMPH - (int) KMPH) * 100;      //Getting Digits X1 & X0 (e.g. : 35)
+  
+  USART_TX( (uint8_t) KMPHDig10 % 10 + 0x30 );         //Send X0
+  USART_TX( (uint8_t) KMPHDig10 / 10 + 0x30 );         //Send X1
+  USART_TX( (uint8_t) KMPH % 10 + 0x30 );              //Send X2
+  USART_TX( ((uint8_t) KMPH / 10) % 10 + 0x30 );       //Send X3
+}
+
+
+void
+send_Current(float current)
+{
+  uint8_t currentDig43   = (int) current % 100;			     //Getting Digits X4 & X3 (e.g. : 35)
+  uint8_t currentDig4    = currentDig43 / 10; 
+  uint16_t currentDig210 = (current - (int) current) * 1000; //Getting Digits X3 & X2 & X1 (e.g. : 143)
+  uint8_t currentDig1    = currentDig210 / 10 - (currentDig210 / 100) * 10;
+  
+  USART_TX(( (currentDig210) %10 + 0x30 ));				  //Send X0
+  USART_TX(( (currentDig1) + 0x30 ));					  //Send X1
+  USART_TX(( (currentDig210 / 100) + 0x30 ));			  //Send X2
+  USART_TX(( (currentDig43 % 10 + 0x30 )));				  //Send X3
+  USART_TX(( (currentDig4 + 0x30)));					  //Send X4
 }
