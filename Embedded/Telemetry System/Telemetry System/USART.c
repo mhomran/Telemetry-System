@@ -25,7 +25,7 @@ USART_TX(uint8_t data )
 void 
 USART_PRINTF(const char *str)
 {
-	int x =0;
+	int x = 0;
 	while (str[x]){
 	USART_TX(str[x]);
 	x++;
