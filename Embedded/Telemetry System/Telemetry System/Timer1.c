@@ -26,9 +26,9 @@ ISR
 	//enable nested interrupts for Hall sensor
 	sei();
 	
-	//if (Send == 1)
-	//{
-	//After_Send = 1;	
+	if (Send == 1)
+	{
+	After_Send = 1;	
 
     //byte 0x1B means the end of the frame
 	// so don't put it as a data and put it as a combination
@@ -40,7 +40,7 @@ ISR
     send_Current(current);//Sending the Current value 
   
 	USART_TX(0x1B);		  //Send delimiter -> End of Package
-	//}
+	}
 }
 
 void
