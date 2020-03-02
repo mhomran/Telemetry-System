@@ -44,7 +44,7 @@ function ButtonClicked()
         //Take the difference between clicking start and plotting data
         //, and add it to the last time you clicked stop
         xAxis += (performance.now() - strtOffset )/1000;
-        console.log(xAxis);
+
         Plotly.extendTraces('chart', {y:[[Speed],[Current]], x:[[xAxis],[xAxis]]}, [0,1])} 
             ,1);
     }    
