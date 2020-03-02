@@ -1,10 +1,12 @@
-var starting = 1;
-var Speed = 0;
-var Current = 0;
-var offset = 0;
+var starting   = 1;
+var Speed      = 0;
+var Current    = 0;
+var strtOffset = 0;
+var xAxis      = 0;
 var interval;
 
 var layout = {
+  title: 'Speed vs Current Graph',
   grid: {rows: 2, columns: 1, pattern: 'independent'},
 };
 
@@ -34,13 +36,15 @@ function ButtonClicked()
     }  
   else if(document.getElementById("Button").value= "Start") 
     {
+      strtOffset = performance.now();
       document.getElementById("Button").value= "Stop";
       document.getElementById("Button").className = "StopBtn";
-
-      offset = performance.now();
       interval = setInterval(function()
       {
-        var xAxis = (performance.now() - offset)/1000;
+        //Take the difference between clicking start and plotting data
+        //, and add it to the last time you clicked stop
+        xAxis += (performance.now() - strtOffset )/1000;
+        console.log(xAxis);
         Plotly.extendTraces('chart', {y:[[Speed],[Current]], x:[[xAxis],[xAxis]]}, [0,1])} 
             ,1);
     }    
