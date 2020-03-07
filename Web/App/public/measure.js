@@ -10,7 +10,7 @@ const baseAddress = "http://localhost:8081"
 
 
 var layout = {
-  title: 'Speed vs Current Graph',
+  title: 'Speed and Current Graphs',
   grid: {rows: 2, columns: 1, pattern: 'independent'},
 };
 
@@ -40,17 +40,17 @@ function ButtonClicked()
     }  
   else if(document.getElementById("Button").value= "Start") 
     {
-      strtOffset = performance.now();
       document.getElementById("Button").value= "Stop";
       document.getElementById("Button").className = "StopBtn";
+
       interval = setInterval(function()
       {
         //Take the difference between clicking start and plotting data
         //, and add it to the last time you clicked stop
-        xAxis += (performance.now() - strtOffset )/1000;
+        xAxis++;
 
         Plotly.extendTraces('chart', {y:[[Speed],[Current]], x:[[xAxis],[xAxis]]}, [0,1])} 
-            ,1);
+            ,1000);
     }    
 } 
 
@@ -61,8 +61,9 @@ function SaveButtonClicked()
 
   axios.post(baseAddress + "/writejsonfile", chart.data)
   .then(function (response) {
-    console.log(response);
   });
+
+  alert("Saved")
 }
 
 function LoadButtonClicked()
@@ -77,6 +78,8 @@ function LoadButtonClicked()
 
     //plot one point in the end of the of the graph to make plotly draw all the data
     Plotly.extendTraces('chart', {y:[[Speed],[Current]], x:[[x_temp],[x_temp]]}, [0,1]);
+
+    alert("loaded")
   });
 }
 
