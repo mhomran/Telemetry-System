@@ -63,9 +63,6 @@ function SaveButtonClicked()
   .then(function (response) {
     console.log(response);
   });
-  
-  //console.log(chart.data);
-  //console.log(chart.layout);
 }
 
 function LoadButtonClicked()

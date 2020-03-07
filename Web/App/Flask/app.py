@@ -25,30 +25,6 @@ def write_json_file():
 
     return "Saved"
 
-
-@app.route("/hello", methods=['GET'])
-def hello():
-    return "hello"
-
-@app.route("/json", methods=["POST"])
-def json_example():
-
-    if request.json:
-        req = request.get_json()
-        response_body = {
-            "message": "JSON received!",
-            "sender": req.get("Name")
-        }
-        res = make_response(jsonify(response_body), 200)
-        return res
-    else:
-        return make_response(jsonify({"message": "Request body must be JSON"}), 400)
-
-@app.route("/", methods=['GET'])
-def student():
-    return render_template("index.html")
-
-
 # for CORS
 flask_cors.CORS(app)
 
