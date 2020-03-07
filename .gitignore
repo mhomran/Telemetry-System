@@ -2,3 +2,9 @@
 
 /Embedded/Telemetry System/.vs
 /Embedded/Telemetry System/Telemetry System/Debug
+
+# pycharm
+/Web/App/Flask/__pycache__
+/Web/App/Flask/env
+/Web/App/Flask/.idea
+/Web/App/Flask/labs
