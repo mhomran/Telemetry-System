@@ -4,30 +4,29 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src = "app.js"></script>
     <script src="plotly.min.js"></script>
-        <!-- update the version number as needed -->
-        <script defer src="/__/firebase/7.2.3/firebase-app.js"></script>
-        <!-- include only the Firebase features as you need -->
-        <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
-        <!-- initialize the SDK after all desired features are loaded -->
-        <script defer src="/__/firebase/init.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="axios.min.js"></script>
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.2.3/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.2.3/firebase-database.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
     <title>Dash board</title>
   </head>
 
   <body>
-    
     <h1 id = "bigOne">Real Time Graph</h1>
     <div class="navbar"><span></span></div>
     <div class="wrapper">
-        <div id="chart"></div>
-        <script src="measure.js">
-       
-        </script>
+      <div id="chart"></div>
+        <script src="measure.js"></script>
     </div>
-
     
 <input id = "Button" class = "StartBtn" type = "button" value = "Start" onclick= "ButtonClicked()" ></input>
-<input id=  "Save"  class = "SaveBtn" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
+<input id = "Save"  class = "SaveBtn" type = "button" value = "Save" onclick="SaveButtonClicked()"></input>
+<input id = "Load"  class = "LoadBtn" type = "button" value = "Load" onclick="LoadButtonClicked()"></input>
 
   </body>
 </html>

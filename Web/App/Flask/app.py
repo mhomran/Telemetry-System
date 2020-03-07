@@ -4,14 +4,13 @@ import json
 
 app = Flask(__name__, static_folder='assets')
 
-# read json file
-F = open("file.json","r")
-# turn the data into dictionary
-data_store = json.load(F)
-
 
 @app.route("/readjsonfile", methods=['GET'])
 def read_json_file():
+    # read json file
+    F = open("labs/write_file.json", "r")
+    # turn the data into dictionary
+    data_store = json.load(F)
     js_object = make_response(jsonify(data_store), 200)
     return js_object
 
@@ -19,7 +18,7 @@ def read_json_file():
 # making json file
 @app.route("/writejsonfile", methods=['POST'])
 def write_json_file():
-    write_file = open("write_file.json", "w")
+    write_file = open("labs/write_file.json", "w")
     if request.json:
         req = request.get_json()
         json.dump(req, write_file)
@@ -54,5 +53,5 @@ def student():
 flask_cors.CORS(app)
 
 # debug is for restarting whenever app.py changes
-app.run(debug=True)
+app.run(debug=True, port=8081)
 

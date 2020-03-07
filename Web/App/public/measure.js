@@ -5,6 +5,10 @@ var strtOffset = 0;
 var xAxis      = 0;
 var interval;
 
+// for flask server
+const baseAddress = "http://localhost:8081"
+
+
 var layout = {
   title: 'Speed vs Current Graph',
   grid: {rows: 2, columns: 1, pattern: 'independent'},
@@ -52,5 +56,30 @@ function ButtonClicked()
 
 function SaveButtonClicked()
 {
-  Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'Speed&Current_graph'}); 
+  //Plotly.downloadImage('chart', {format: 'svg', width: 800, height: 600, filename: 'Speed&Current_graph'}); 
+  var chart = document.getElementById("chart");
+
+  axios.post(baseAddress + "/writejsonfile", chart.data)
+  .then(function (response) {
+    console.log(response);
+  });
+  
+  //console.log(chart.data);
+  //console.log(chart.layout);
 }
+
+function LoadButtonClicked()
+{
+  var chart = document.getElementById("chart");
+
+  //get the data
+  axios.get(baseAddress + "/readjsonfile")
+  .then(function (response) {
+    chart.data = response.data
+    var x_temp = chart.data[0].x[chart.data[0].x.length - 1 ];
+
+    //plot one point in the end of the of the graph to make plotly draw all the data
+    Plotly.extendTraces('chart', {y:[[Speed],[Current]], x:[[x_temp],[x_temp]]}, [0,1]);
+  });
+}
+
